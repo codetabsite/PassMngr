@@ -1,0 +1,111 @@
+package com.tdev.passmngr.ui.add
+
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import com.tdev.passmngr.PassMngrApp
+import com.tdev.passmngr.R
+import com.tdev.passmngr.data.model.Category
+import com.tdev.passmngr.databinding.ActivityAddEditBinding
+
+class AddEditActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityAddEditBinding
+    private val viewModel: AddEditViewModel by viewModels {
+        AddEditViewModelFactory((application as PassMngrApp).repository)
+    }
+
+    private val categories = Category.values()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityAddEditBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val editId = intent.getLongExtra("id", -1L)
+        if (editId != -1L) {
+            supportActionBar?.title = "Düzenle"
+            viewModel.load(editId)
+            viewModel.existing?.let { populateFields(it) }
+        }
+
+        binding.spinnerCategory.adapter = android.widget.ArrayAdapter(
+            this, android.R.layout.simple_spinner_item,
+            categories.map { it.label }
+        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+
+        binding.btnGenerate.setOnClickListener {
+            binding.etPassword.setText(viewModel.generatePassword())
+        }
+
+        binding.etPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                updateStrengthBar(s.toString())
+            }
+        })
+
+        binding.btnTogglePassword.setOnClickListener {
+            togglePasswordVisibility()
+        }
+
+        binding.btnSave.setOnClickListener {
+            val account = binding.etAccount.text.toString().trim()
+            val username = binding.etUsername.text.toString().trim()
+            val password = binding.etPassword.text.toString()
+            val category = categories[binding.spinnerCategory.selectedItemPosition]
+
+            if (account.isEmpty() || password.isEmpty()) {
+                binding.tilAccount.error = if (account.isEmpty()) "Boş bırakılamaz" else null
+                binding.tilPassword.error = if (password.isEmpty()) "Boş bırakılamaz" else null
+                return@setOnClickListener
+            }
+            viewModel.save(account, username, password, category)
+        }
+
+        viewModel.saved.observe(this) { if (it) finish() }
+    }
+
+    private fun populateFields(p: com.tdev.passmngr.data.model.Password) {
+        binding.etAccount.setText(p.accountName)
+        binding.etUsername.setText(p.username)
+        binding.etPassword.setText(viewModel.decryptExisting())
+        binding.spinnerCategory.setSelection(categories.indexOf(p.category))
+    }
+
+    private fun updateStrengthBar(pw: String) {
+        val strength = viewModel.getStrength(pw)
+        binding.strengthBar.progress = strength * 20
+        val (color, label) = when (strength) {
+            1 -> Pair(R.color.strength_weak, "Çok Zayıf")
+            2 -> Pair(R.color.strength_fair, "Zayıf")
+            3 -> Pair(R.color.strength_good, "İyi")
+            4 -> Pair(R.color.strength_strong, "Güçlü")
+            5 -> Pair(R.color.strength_very_strong, "Çok Güçlü")
+            else -> Pair(R.color.strength_weak, "")
+        }
+        binding.strengthBar.progressTintList = android.content.res.ColorStateList.valueOf(
+            androidx.core.content.ContextCompat.getColor(this, color)
+        )
+        binding.tvStrength.text = label
+    }
+
+    private fun togglePasswordVisibility() {
+        val isVisible = binding.etPassword.transformationMethod == null
+        binding.etPassword.transformationMethod = if (isVisible)
+            android.text.method.PasswordTransformationMethod.getInstance()
+        else null
+        binding.btnTogglePassword.setImageResource(
+            if (isVisible) R.drawable.ic_eye_off else R.drawable.ic_eye
+        )
+        binding.etPassword.setSelection(binding.etPassword.text?.length ?: 0)
+    }
+
+    override fun onSupportNavigateUp(): Boolean { finish(); return true }
+}

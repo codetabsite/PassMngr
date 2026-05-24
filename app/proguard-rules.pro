@@ -1,0 +1,4 @@
+-keep class com.tdev.passmngr.data.model.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn okhttp3.**
