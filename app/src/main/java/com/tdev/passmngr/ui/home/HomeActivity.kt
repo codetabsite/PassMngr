@@ -2,7 +2,6 @@ package com.tdev.passmngr.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -71,9 +70,11 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.toolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.action_export -> exportPasswords(); true
-                else -> false
+            if (item.itemId == R.id.action_export) {
+                exportPasswords()
+                true
+            } else {
+                false
             }
         }
     }
