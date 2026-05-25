@@ -47,7 +47,8 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.passwords.collect { list ->
                 adapter.submitList(list)
-                binding.tvEmpty.visibility = if (list.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
+                binding.tvEmpty.visibility =
+                    if (list.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
             }
         }
 
@@ -64,10 +65,12 @@ class HomeActivity : AppCompatActivity() {
         })
 
         binding.chipAll.setOnClickListener { viewModel.setCategory(null) }
-        Category.values().forEachIndexed { i, cat ->
-            val chip = binding.chipGroup.getChildAt(i + 1) ?: return@forEachIndexed
-            chip.setOnClickListener { viewModel.setCategory(cat) }
-        }
+        binding.chipSocial.setOnClickListener { viewModel.setCategory(Category.SOCIAL) }
+        binding.chipBank.setOnClickListener { viewModel.setCategory(Category.BANK) }
+        binding.chipGame.setOnClickListener { viewModel.setCategory(Category.GAME) }
+        binding.chipEmail.setOnClickListener { viewModel.setCategory(Category.EMAIL) }
+        binding.chipWork.setOnClickListener { viewModel.setCategory(Category.WORK) }
+        binding.chipOther.setOnClickListener { viewModel.setCategory(Category.OTHER) }
 
         binding.toolbar.setOnMenuItemClickListener { item ->
             if (item.itemId == R.id.action_export) {
@@ -92,7 +95,11 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val list = viewModel.passwords.value
             if (list.isEmpty()) return@launch
-            startActivity(Intent.createChooser(ExportManager.exportToCsv(this@HomeActivity, list), "Yedek paylaş"))
+            startActivity(
+                Intent.createChooser(
+                    ExportManager.exportToCsv(this@HomeActivity, list), "Yedek paylaş"
+                )
+            )
         }
     }
 }
