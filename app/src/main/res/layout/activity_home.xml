@@ -45,54 +45,74 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <com.google.android.material.chip.Chip
+                <Button
                     android:id="@+id/chipAll"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="32dp"
                     android:text="Tümü"
                     android:layout_marginEnd="6dp"
-                    style="@style/Widget.Material3.Chip.Filter" />
+                    android:textSize="12sp"
+                    android:paddingHorizontal="12dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <com.google.android.material.chip.Chip
+                <Button
+                    android:id="@+id/chipSocial"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sosyal Medya"
+                    android:layout_height="32dp"
+                    android:text="Sosyal"
                     android:layout_marginEnd="6dp"
-                    style="@style/Widget.Material3.Chip.Filter" />
+                    android:textSize="12sp"
+                    android:paddingHorizontal="12dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <com.google.android.material.chip.Chip
+                <Button
+                    android:id="@+id/chipBank"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="32dp"
                     android:text="Banka"
                     android:layout_marginEnd="6dp"
-                    style="@style/Widget.Material3.Chip.Filter" />
+                    android:textSize="12sp"
+                    android:paddingHorizontal="12dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <com.google.android.material.chip.Chip
+                <Button
+                    android:id="@+id/chipGame"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="32dp"
                     android:text="Oyun"
                     android:layout_marginEnd="6dp"
-                    style="@style/Widget.Material3.Chip.Filter" />
+                    android:textSize="12sp"
+                    android:paddingHorizontal="12dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <com.google.android.material.chip.Chip
+                <Button
+                    android:id="@+id/chipEmail"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="32dp"
                     android:text="E-posta"
                     android:layout_marginEnd="6dp"
-                    style="@style/Widget.Material3.Chip.Filter" />
+                    android:textSize="12sp"
+                    android:paddingHorizontal="12dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <com.google.android.material.chip.Chip
+                <Button
+                    android:id="@+id/chipWork"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="32dp"
                     android:text="İş"
                     android:layout_marginEnd="6dp"
-                    style="@style/Widget.Material3.Chip.Filter" />
+                    android:textSize="12sp"
+                    android:paddingHorizontal="12dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <com.google.android.material.chip.Chip
+                <Button
+                    android:id="@+id/chipOther"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="32dp"
                     android:text="Diğer"
-                    style="@style/Widget.Material3.Chip.Filter" />
+                    android:textSize="12sp"
+                    android:paddingHorizontal="12dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
             </LinearLayout>
         </HorizontalScrollView>
