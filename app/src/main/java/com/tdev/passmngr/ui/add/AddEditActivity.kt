@@ -3,13 +3,14 @@ package com.tdev.passmngr.ui.add
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.tdev.passmngr.PassMngrApp
 import com.tdev.passmngr.R
 import com.tdev.passmngr.data.model.Category
 import com.tdev.passmngr.databinding.ActivityAddEditBinding
+import kotlinx.coroutines.launch
 
 class AddEditActivity : AppCompatActivity() {
 
@@ -27,17 +28,24 @@ class AddEditActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val editId = intent.getLongExtra("id", -1L)
-        if (editId != -1L) {
-            supportActionBar?.title = "Düzenle"
-            viewModel.load(editId)
-            viewModel.existing?.let { populateFields(it) }
-        }
-
         binding.spinnerCategory.adapter = android.widget.ArrayAdapter(
             this, android.R.layout.simple_spinner_item,
             categories.map { it.label }
         ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+
+        val editId = intent.getLongExtra("id", -1L)
+        if (editId != -1L) {
+            supportActionBar?.title = "Düzenle"
+            lifecycleScope.launch {
+                viewModel.load(editId)
+                viewModel.existing?.let { p ->
+                    binding.etAccount.setText(p.accountName)
+                    binding.etUsername.setText(p.username)
+                    binding.etPassword.setText(viewModel.decryptExisting())
+                    binding.spinnerCategory.setSelection(categories.indexOf(p.category))
+                }
+            }
+        }
 
         binding.btnGenerate.setOnClickListener {
             binding.etPassword.setText(viewModel.generatePassword())
@@ -61,22 +69,20 @@ class AddEditActivity : AppCompatActivity() {
             val password = binding.etPassword.text.toString()
             val category = categories[binding.spinnerCategory.selectedItemPosition]
 
-            if (account.isEmpty() || password.isEmpty()) {
-                binding.tilAccount.error = if (account.isEmpty()) "Boş bırakılamaz" else null
-                binding.tilPassword.error = if (password.isEmpty()) "Boş bırakılamaz" else null
+            if (account.isEmpty()) {
+                binding.tilAccount.error = "Boş bırakılamaz"
                 return@setOnClickListener
             }
+            if (password.isEmpty()) {
+                binding.tilPassword.error = "Boş bırakılamaz"
+                return@setOnClickListener
+            }
+            binding.tilAccount.error = null
+            binding.tilPassword.error = null
             viewModel.save(account, username, password, category)
         }
 
         viewModel.saved.observe(this) { if (it) finish() }
-    }
-
-    private fun populateFields(p: com.tdev.passmngr.data.model.Password) {
-        binding.etAccount.setText(p.accountName)
-        binding.etUsername.setText(p.username)
-        binding.etPassword.setText(viewModel.decryptExisting())
-        binding.spinnerCategory.setSelection(categories.indexOf(p.category))
     }
 
     private fun updateStrengthBar(pw: String) {
