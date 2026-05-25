@@ -22,16 +22,10 @@ class AuthActivity : AppCompatActivity() {
         binding.btnAuth.setOnClickListener { authenticate() }
     }
 
-    private fun isBiometricAvailable(): Boolean {
-        val mgr = BiometricManager.from(this)
-        return mgr.canAuthenticate(
-            BiometricManager.Authenticators.BIOMETRIC_STRONG or
-            BiometricManager.Authenticators.BIOMETRIC_WEAK
-        ) == BiometricManager.BIOMETRIC_SUCCESS
-    }
-
     private fun authenticate() {
-        if (!isBiometricAvailable()) {
+        val mgr = BiometricManager.from(this)
+        val canAuth = mgr.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
+        if (canAuth != BiometricManager.BIOMETRIC_SUCCESS) {
             openHome()
             return
         }
@@ -47,7 +41,7 @@ class AuthActivity : AppCompatActivity() {
                     super.onAuthenticationError(errorCode, errString)
                     if (errorCode != BiometricPrompt.ERROR_USER_CANCELED &&
                         errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
-                        Toast.makeText(this@AuthActivity, errString, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@AuthActivity, "$errString", Toast.LENGTH_SHORT).show()
                     }
                 }
                 override fun onAuthenticationFailed() {
@@ -58,11 +52,8 @@ class AuthActivity : AppCompatActivity() {
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("PassMngr")
-            .setSubtitle("Devam etmek için kimliğinizi doğrulayın")
-            .setAllowedAuthenticators(
-                BiometricManager.Authenticators.BIOMETRIC_STRONG or
-                BiometricManager.Authenticators.BIOMETRIC_WEAK
-            )
+            .setSubtitle("Parmak izi ile giriş yapın")
+            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK)
             .setNegativeButtonText("İptal")
             .build()
 
