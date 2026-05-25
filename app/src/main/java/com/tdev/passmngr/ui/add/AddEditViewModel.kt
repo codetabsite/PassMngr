@@ -14,7 +14,7 @@ class AddEditViewModel(private val repo: PasswordRepository) : ViewModel() {
 
     var existing: Password? = null
 
-    fun load(id: Long) = viewModelScope.launch {
+    suspend fun load(id: Long) {
         existing = repo.getById(id)
     }
 
@@ -24,15 +24,16 @@ class AddEditViewModel(private val repo: PasswordRepository) : ViewModel() {
 
     fun getStrength(pw: String): Int = PasswordGenerator.strength(pw)
 
-    fun save(account: String, username: String, password: String, category: Category) = viewModelScope.launch {
-        val ex = existing
-        if (ex == null) {
-            repo.save(account, username, password, category)
-        } else {
-            repo.update(ex, account, username, password, category)
+    fun save(account: String, username: String, password: String, category: Category) =
+        viewModelScope.launch {
+            val ex = existing
+            if (ex == null) {
+                repo.save(account, username, password, category)
+            } else {
+                repo.update(ex, account, username, password, category)
+            }
+            _saved.postValue(true)
         }
-        _saved.postValue(true)
-    }
 }
 
 class AddEditViewModelFactory(private val repo: PasswordRepository) : ViewModelProvider.Factory {
