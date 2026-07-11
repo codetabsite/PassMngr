@@ -1,0 +1,22 @@
+Categories:
+  - Security
+
+License: GPL-3.0-only
+
+AutoName: PassMngr
+
+RepoType: git
+Repo: https://github.com/codetabsite/PassMngr
+
+Builds:
+  - versionName: '1.1.0'
+    versionCode: 2
+    commit: v1.1.0
+    subdir: app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.1.0'
+CurrentVersionCode: 2
