@@ -6,6 +6,12 @@ import com.tdev.passmngr.data.repository.PasswordRepository
 
 class PassMngrApp : Application() {
 
-    val database by lazy { PassDatabase.getInstance(this) }
-    val repository by lazy { PasswordRepository(database.passwordDao()) }
+    val repository: PasswordRepository by lazy {
+        val db = PassDatabase.getInstance(this)
+        PasswordRepository(db.passwordDao(), db.historyDao())
+    }
+
+    // Uygulamanın arka plana geçtiği zaman — otomatik kilit için
+    var backgroundedAt: Long = 0L
+    var isUnlocked: Boolean = false
 }
