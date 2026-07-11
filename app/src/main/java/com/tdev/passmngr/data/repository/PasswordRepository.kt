@@ -1,34 +1,48 @@
 package com.tdev.passmngr.data.repository
 
 import com.tdev.passmngr.data.db.PasswordDao
-import com.tdev.passmngr.data.model.Category
+import com.tdev.passmngr.data.db.PasswordHistoryDao
 import com.tdev.passmngr.data.model.Password
+import com.tdev.passmngr.data.model.PasswordHistory
+import com.tdev.passmngr.data.model.SortOrder
 import com.tdev.passmngr.util.CryptoManager
 import kotlinx.coroutines.flow.Flow
 
-class PasswordRepository(private val dao: PasswordDao) {
-
-    fun getAll(): Flow<List<Password>> = dao.getAll()
-
-    fun search(query: String): Flow<List<Password>> =
-        if (query.isBlank()) dao.getAll() else dao.search(query)
-
-    fun getByCategory(category: Category): Flow<List<Password>> =
-        dao.getByCategory(category.name)
+class PasswordRepository(
+    private val dao: PasswordDao,
+    private val historyDao: PasswordHistoryDao,
+) {
+    fun getAll(sort: SortOrder): Flow<List<Password>> = when (sort) {
+        SortOrder.NAME_ASC   -> dao.getAllByName()
+        SortOrder.DATE_DESC  -> dao.getAllByDate()
+        SortOrder.LAST_USED  -> dao.getAllByLastUsed()
+    }
 
     suspend fun getById(id: Long): Password? = dao.getById(id)
 
-    suspend fun save(accountName: String, username: String, plainPassword: String, category: Category): Long {
-        val encrypted = CryptoManager.encrypt(plainPassword)
-        return dao.insert(Password(accountName = accountName, username = username, encryptedPassword = encrypted, category = category))
-    }
-
-    suspend fun update(existing: Password, newAccountName: String, newUsername: String, newPlainPassword: String, newCategory: Category) {
-        val encrypted = CryptoManager.encrypt(newPlainPassword)
-        dao.update(existing.copy(accountName = newAccountName, username = newUsername, encryptedPassword = encrypted, category = newCategory, updatedAt = System.currentTimeMillis()))
+    suspend fun save(password: Password): Long {
+        val encrypted = password.copy(
+            encryptedPassword = CryptoManager.encrypt(password.encryptedPassword)
+        )
+        return if (password.id == 0L) {
+            dao.insert(encrypted)
+        } else {
+            // Güncelleme öncesi geçmişe kaydet
+            dao.getById(password.id)?.let { old ->
+                historyDao.insert(PasswordHistory(passwordId = old.id, encryptedPassword = old.encryptedPassword))
+                historyDao.pruneOldHistory(old.id)
+            }
+            dao.update(encrypted.copy(updatedAt = System.currentTimeMillis()))
+            password.id
+        }
     }
 
     suspend fun delete(password: Password) = dao.delete(password)
 
-    fun decryptPassword(password: Password): String = CryptoManager.decrypt(password.encryptedPassword)
+    suspend fun markUsed(id: Long) = dao.updateLastUsed(id, System.currentTimeMillis())
+
+    fun decrypt(password: Password): String = CryptoManager.decrypt(password.encryptedPassword)
+
+    suspend fun getHistory(id: Long): List<String> =
+        historyDao.getHistory(id).map { CryptoManager.decrypt(it.encryptedPassword) }
 }
