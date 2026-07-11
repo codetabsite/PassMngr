@@ -1,4 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App -->
     <string name="app_name">PassMngr</string>
+
+    <!-- Auth -->
+    <string name="auth_subtitle">Verify your identity</string>
+    <string name="auth_pin_create">Create a PIN</string>
+    <string name="auth_pin_enter">Enter PIN</string>
+    <string name="auth_btn_enter">Sign in</string>
+    <string name="auth_pin_too_short">PIN must be at least 4 digits</string>
+    <string name="auth_biometric_subtitle">Verify your identity</string>
+    <string name="auth_biometric_cancel">Use PIN</string>
+    <string name="auth_wrong_pin">Wrong PIN</string>
+
+    <!-- Home -->
+    <string name="home_empty">No passwords yet</string>
+    <string name="home_search_hint">Search…</string>
+    <string name="home_menu_sort">Sort</string>
+    <string name="home_menu_export">Backup</string>
+    <string name="home_sort_name">A–Z</string>
+    <string name="home_sort_date">Recently added</string>
+    <string name="home_sort_used">Recently used</string>
+    <string name="home_delete_title">Delete</string>
+    <string name="home_delete_message">Delete %1$s?</string>
+    <string name="home_export_chooser">Share backup</string>
+
+    <!-- Categories -->
+    <string name="category_social">Social Media</string>
+    <string name="category_bank">Banking</string>
+    <string name="category_game">Gaming</string>
+    <string name="category_email">Email</string>
+    <string name="category_work">Work</string>
+    <string name="category_other">Other</string>
+    <string name="category_all">All</string>
+
+    <!-- Add / Edit -->
+    <string name="addedit_title_add">Add Password</string>
+    <string name="addedit_title_edit">Edit</string>
+    <string name="addedit_hint_account">Account Name</string>
+    <string name="addedit_hint_username">Username / Email</string>
+    <string name="addedit_hint_password">Password</string>
+    <string name="addedit_hint_note">Note (optional)</string>
+    <string name="addedit_category_label">Category</string>
+    <string name="addedit_btn_generate">Generate password</string>
+    <string name="addedit_btn_save">Save</string>
+    <string name="addedit_error_empty">Cannot be empty</string>
+    <string name="addedit_toggle_password">Show/Hide</string>
+
+    <!-- Strength -->
+    <string name="strength_very_weak">Very weak</string>
+    <string name="strength_weak">Weak</string>
+    <string name="strength_good">Good</string>
+    <string name="strength_strong">Strong</string>
+    <string name="strength_very_strong">Very strong</string>
+
+    <!-- Detail -->
+    <string name="detail_title">Detail</string>
+    <string name="detail_label_username">Username</string>
+    <string name="detail_label_password">Password</string>
+    <string name="detail_label_note">Note</string>
+    <string name="detail_btn_edit">Edit</string>
+    <string name="detail_btn_history">Password History</string>
+    <string name="detail_copy_username">Copy username</string>
+    <string name="detail_copy_password">Copy password</string>
+    <string name="detail_history_title">Password History (last %1$d)</string>
+    <string name="detail_history_empty">No history yet.</string>
+    <string name="detail_ok">OK</string>
+
+    <!-- Common -->
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_delete">Delete</string>
 </resources>
