@@ -19,7 +19,7 @@ class AddEditActivity : AppCompatActivity() {
         AddEditViewModelFactory((application as PassMngrApp).repository)
     }
 
-    private val categories = Category.values()
+    private val categories = Category.entries.toTypedArray()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +42,7 @@ class AddEditActivity : AppCompatActivity() {
                     binding.etAccount.setText(p.accountName)
                     binding.etUsername.setText(p.username)
                     binding.etPassword.setText(viewModel.decryptExisting())
+                    binding.etNote.setText(p.note)
                     binding.spinnerCategory.setSelection(categories.indexOf(p.category))
                 }
             }
@@ -54,19 +55,16 @@ class AddEditActivity : AppCompatActivity() {
         binding.etPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                updateStrengthBar(s.toString())
-            }
+            override fun afterTextChanged(s: Editable?) { updateStrengthBar(s.toString()) }
         })
 
-        binding.btnTogglePassword.setOnClickListener {
-            togglePasswordVisibility()
-        }
+        binding.btnTogglePassword.setOnClickListener { togglePasswordVisibility() }
 
         binding.btnSave.setOnClickListener {
-            val account = binding.etAccount.text.toString().trim()
+            val account  = binding.etAccount.text.toString().trim()
             val username = binding.etUsername.text.toString().trim()
             val password = binding.etPassword.text.toString()
+            val note     = binding.etNote.text.toString().trim()
             val category = categories[binding.spinnerCategory.selectedItemPosition]
 
             if (account.isEmpty()) {
@@ -79,26 +77,30 @@ class AddEditActivity : AppCompatActivity() {
             }
             binding.tilAccount.error = null
             binding.tilPassword.error = null
-            viewModel.save(account, username, password, category)
+
+            viewModel.save(account, username, password, category, note)
         }
 
-        viewModel.saved.observe(this) { if (it) finish() }
+        lifecycleScope.launch {
+            viewModel.saved.collect { if (it) finish() }
+        }
     }
 
     private fun updateStrengthBar(pw: String) {
         val strength = viewModel.getStrength(pw)
         binding.strengthBar.progress = strength * 20
         val (color, label) = when (strength) {
-            1 -> Pair(R.color.strength_weak, "Çok Zayıf")
-            2 -> Pair(R.color.strength_fair, "Zayıf")
-            3 -> Pair(R.color.strength_good, "İyi")
-            4 -> Pair(R.color.strength_strong, "Güçlü")
-            5 -> Pair(R.color.strength_very_strong, "Çok Güçlü")
-            else -> Pair(R.color.strength_weak, "")
+            1    -> R.color.strength_weak to "Çok zayıf"
+            2    -> R.color.strength_fair to "Zayıf"
+            3    -> R.color.strength_good to "İyi"
+            4    -> R.color.strength_strong to "Güçlü"
+            5    -> R.color.strength_very_strong to "Çok güçlü"
+            else -> R.color.strength_weak to ""
         }
-        binding.strengthBar.progressTintList = android.content.res.ColorStateList.valueOf(
-            androidx.core.content.ContextCompat.getColor(this, color)
-        )
+        binding.strengthBar.progressTintList =
+            android.content.res.ColorStateList.valueOf(
+                androidx.core.content.ContextCompat.getColor(this, color)
+            )
         binding.tvStrength.text = label
     }
 
@@ -106,7 +108,8 @@ class AddEditActivity : AppCompatActivity() {
         val isVisible = binding.etPassword.transformationMethod == null
         binding.etPassword.transformationMethod = if (isVisible)
             android.text.method.PasswordTransformationMethod.getInstance()
-        else null
+        else
+            null
         binding.btnTogglePassword.setImageResource(
             if (isVisible) R.drawable.ic_eye_off else R.drawable.ic_eye
         )
