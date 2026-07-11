@@ -3,6 +3,7 @@ package com.tdev.passmngr.data.db
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import android.content.Context
@@ -14,6 +15,7 @@ import com.tdev.passmngr.data.model.PasswordHistory
     version = 2,
     exportSchema = false,
 )
+@TypeConverters(Converters::class)
 abstract class PassDatabase : RoomDatabase() {
     abstract fun passwordDao(): PasswordDao
     abstract fun historyDao(): PasswordHistoryDao
