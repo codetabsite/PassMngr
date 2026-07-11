@@ -9,57 +9,58 @@ on:
 
 jobs:
   build:
-    name: Build & Sign APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Kodu çek
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Java 17 kur
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: gradle
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Gradle cache
+        uses: actions/cache@v4
         with:
-          gradle-version: '8.6'
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('**/*.gradle', '**/gradle-wrapper.properties') }}
+          restore-keys: gradle-
 
-      - name: Run unit tests
-        run: gradle test --no-daemon
+      - name: Gradle'a izin ver
+        run: chmod +x gradlew
 
-      - name: Build debug APK
-        run: gradle assembleDebug --no-daemon
+      - name: Unit testleri çalıştır
+        run: ./gradlew test --stacktrace
 
-      - name: Build release APK
-        if: startsWith(github.ref, 'refs/tags/v')
-        env:
-          KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ${{ runner.temp }}/keystore.jks
-          gradle assembleRelease --no-daemon
+      - name: Debug APK üret
+        run: ./gradlew assembleDebug --stacktrace
 
-      - name: Upload debug APK
+      - name: Debug APK'yı kaydet
         uses: actions/upload-artifact@v4
         with:
           name: passmngr-debug-${{ github.sha }}
           path: app/build/outputs/apk/debug/*.apk
           retention-days: 7
 
-      - name: Upload release APK
+      # Tag gelince release APK — imzasız, F-Droid kendi imzalar
+      - name: Release APK üret (tag)
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Release APK'yı kaydet (tag)
         if: startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v4
         with:
           name: passmngr-release-${{ github.ref_name }}
           path: app/build/outputs/apk/release/*.apk
-          retention-days: 30
+          retention-days: 90
 
-      - name: Create GitHub Release
+      - name: GitHub Release oluştur (tag)
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
