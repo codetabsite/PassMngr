@@ -4,18 +4,18 @@
 
     <item
         android:id="@+id/action_sort"
-        android:title="Sırala"
+        android:title="@string/home_menu_sort"
         app:showAsAction="never">
         <menu>
-            <item android:id="@+id/action_sort_name" android:title="A-Z" />
-            <item android:id="@+id/action_sort_date" android:title="Son eklenen" />
-            <item android:id="@+id/action_sort_used" android:title="Son kullanılan" />
+            <item android:id="@+id/action_sort_name" android:title="@string/home_sort_name" />
+            <item android:id="@+id/action_sort_date" android:title="@string/home_sort_date" />
+            <item android:id="@+id/action_sort_used" android:title="@string/home_sort_used" />
         </menu>
     </item>
 
     <item
         android:id="@+id/action_export"
-        android:title="Yedekle"
+        android:title="@string/home_menu_export"
         app:showAsAction="never" />
 
 </menu>
