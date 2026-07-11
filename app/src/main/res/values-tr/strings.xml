@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App -->
+    <string name="app_name">PassMngr</string>
+
+    <!-- Auth -->
+    <string name="auth_subtitle">Kimliğinizi doğrulayın</string>
+    <string name="auth_pin_create">Bir PIN oluşturun</string>
+    <string name="auth_pin_enter">PIN girin</string>
+    <string name="auth_btn_enter">Giriş</string>
+    <string name="auth_pin_too_short">PIN en az 4 haneli olmalı</string>
+    <string name="auth_biometric_subtitle">Kimliğinizi doğrulayın</string>
+    <string name="auth_biometric_cancel">PIN ile giriş</string>
+    <string name="auth_wrong_pin">Yanlış PIN</string>
+
+    <!-- Home -->
+    <string name="home_empty">Henüz şifre eklenmedi</string>
+    <string name="home_search_hint">Ara…</string>
+    <string name="home_menu_sort">Sırala</string>
+    <string name="home_menu_export">Yedekle</string>
+    <string name="home_sort_name">A–Z</string>
+    <string name="home_sort_date">Son eklenen</string>
+    <string name="home_sort_used">Son kullanılan</string>
+    <string name="home_delete_title">Sil</string>
+    <string name="home_delete_message">%1$s silinsin mi?</string>
+    <string name="home_export_chooser">Yedek paylaş</string>
+
+    <!-- Categories -->
+    <string name="category_social">Sosyal Medya</string>
+    <string name="category_bank">Banka</string>
+    <string name="category_game">Oyun</string>
+    <string name="category_email">E-posta</string>
+    <string name="category_work">İş</string>
+    <string name="category_other">Diğer</string>
+    <string name="category_all">Tümü</string>
+
+    <!-- Add / Edit -->
+    <string name="addedit_title_add">Şifre Ekle</string>
+    <string name="addedit_title_edit">Düzenle</string>
+    <string name="addedit_hint_account">Hesap Adı</string>
+    <string name="addedit_hint_username">Kullanıcı Adı / E-posta</string>
+    <string name="addedit_hint_password">Şifre</string>
+    <string name="addedit_hint_note">Not (isteğe bağlı)</string>
+    <string name="addedit_category_label">Kategori</string>
+    <string name="addedit_btn_generate">Şifre üret</string>
+    <string name="addedit_btn_save">Kaydet</string>
+    <string name="addedit_error_empty">Boş bırakılamaz</string>
+    <string name="addedit_toggle_password">Göster/Gizle</string>
+
+    <!-- Strength -->
+    <string name="strength_very_weak">Çok zayıf</string>
+    <string name="strength_weak">Zayıf</string>
+    <string name="strength_good">İyi</string>
+    <string name="strength_strong">Güçlü</string>
+    <string name="strength_very_strong">Çok güçlü</string>
+
+    <!-- Detail -->
+    <string name="detail_title">Detay</string>
+    <string name="detail_label_username">Kullanıcı Adı</string>
+    <string name="detail_label_password">Şifre</string>
+    <string name="detail_label_note">Not</string>
+    <string name="detail_btn_edit">Düzenle</string>
+    <string name="detail_btn_history">Şifre Geçmişi</string>
+    <string name="detail_copy_username">Kullanıcı adını kopyala</string>
+    <string name="detail_copy_password">Şifreyi kopyala</string>
+    <string name="detail_history_title">Şifre Geçmişi (son %1$d)</string>
+    <string name="detail_history_empty">Henüz geçmiş yok.</string>
+    <string name="detail_ok">Tamam</string>
+
+    <!-- Common -->
+    <string name="btn_cancel">İptal</string>
+    <string name="btn_delete">Sil</string>
+</resources>
