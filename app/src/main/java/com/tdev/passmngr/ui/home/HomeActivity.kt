@@ -11,11 +11,14 @@ import com.tdev.passmngr.PassMngrApp
 import com.tdev.passmngr.R
 import com.tdev.passmngr.data.model.Category
 import com.tdev.passmngr.data.model.Password
+import com.tdev.passmngr.data.model.SortOrder
 import com.tdev.passmngr.databinding.ActivityHomeBinding
 import com.tdev.passmngr.ui.add.AddEditActivity
+import com.tdev.passmngr.ui.auth.AuthActivity
 import com.tdev.passmngr.ui.detail.DetailActivity
 import com.tdev.passmngr.util.ClipboardUtil
 import com.tdev.passmngr.util.ExportManager
+import com.tdev.passmngr.util.PinManager
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -36,8 +39,10 @@ class HomeActivity : AppCompatActivity() {
             onCopy = { p ->
                 val plain = viewModel.decryptPassword(p)
                 ClipboardUtil.copy(this, p.accountName, plain)
+                viewModel.markUsed(p.id)
             },
             onClick = { p ->
+                viewModel.markUsed(p.id)
                 startActivity(Intent(this, DetailActivity::class.java).putExtra("id", p.id))
             },
             onDelete = { p -> confirmDelete(p) }
@@ -45,10 +50,10 @@ class HomeActivity : AppCompatActivity() {
         binding.recycler.adapter = adapter
 
         lifecycleScope.launch {
-            viewModel.passwords.collect { list ->
-                adapter.submitList(list)
+            viewModel.uiState.collect { state ->
+                adapter.submitList(state.passwords)
                 binding.tvEmpty.visibility =
-                    if (list.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
+                    if (state.passwords.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
             }
         }
 
@@ -64,22 +69,40 @@ class HomeActivity : AppCompatActivity() {
             }
         })
 
-        binding.chipAll.setOnClickListener { viewModel.setCategory(null) }
+        binding.chipAll.setOnClickListener    { viewModel.setCategory(null) }
         binding.chipSocial.setOnClickListener { viewModel.setCategory(Category.SOCIAL) }
-        binding.chipBank.setOnClickListener { viewModel.setCategory(Category.BANK) }
-        binding.chipGame.setOnClickListener { viewModel.setCategory(Category.GAME) }
-        binding.chipEmail.setOnClickListener { viewModel.setCategory(Category.EMAIL) }
-        binding.chipWork.setOnClickListener { viewModel.setCategory(Category.WORK) }
-        binding.chipOther.setOnClickListener { viewModel.setCategory(Category.OTHER) }
+        binding.chipBank.setOnClickListener   { viewModel.setCategory(Category.BANK) }
+        binding.chipGame.setOnClickListener   { viewModel.setCategory(Category.GAME) }
+        binding.chipEmail.setOnClickListener  { viewModel.setCategory(Category.EMAIL) }
+        binding.chipWork.setOnClickListener   { viewModel.setCategory(Category.WORK) }
+        binding.chipOther.setOnClickListener  { viewModel.setCategory(Category.OTHER) }
 
         binding.toolbar.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.action_export) {
-                exportPasswords()
-                true
-            } else {
-                false
+            when (item.itemId) {
+                R.id.action_export -> { exportPasswords(); true }
+                R.id.action_sort_name -> { viewModel.setSort(SortOrder.NAME_ASC); true }
+                R.id.action_sort_date -> { viewModel.setSort(SortOrder.DATE_DESC); true }
+                R.id.action_sort_used -> { viewModel.setSort(SortOrder.LAST_USED); true }
+                else -> false
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Otomatik kilit kontrolü
+        val app = application as PassMngrApp
+        val elapsed = System.currentTimeMillis() - app.backgroundedAt
+        if (app.backgroundedAt > 0 && elapsed > PinManager.getAutoLockMillis(this)) {
+            app.isUnlocked = false
+            startActivity(Intent(this, AuthActivity::class.java))
+            finish()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (application as PassMngrApp).backgroundedAt = System.currentTimeMillis()
     }
 
     private fun confirmDelete(password: Password) {
@@ -93,7 +116,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun exportPasswords() {
         lifecycleScope.launch {
-            val list = viewModel.passwords.value
+            val list = viewModel.uiState.value.passwords
             if (list.isEmpty()) return@launch
             startActivity(
                 Intent.createChooser(
