@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:title="PassMngr"
+            android:title="@string/app_name"
             android:titleTextColor="@color/text_primary"
             app:menu="@menu/menu_home" />
 
@@ -27,7 +27,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/bg_search"
-            app:queryHint="Ara..."
+            app:queryHint="@string/home_search_hint"
             app:iconifiedByDefault="false"
             app:searchIcon="@drawable/ic_search" />
 
@@ -45,72 +45,45 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <Button
-                    android:id="@+id/chipAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="Tümü"
-                    android:layout_marginEnd="6dp"
-                    android:textSize="12sp"
-                    android:paddingHorizontal="12dp"
+                <Button android:id="@+id/chipAll"
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="@string/category_all" android:layout_marginEnd="6dp"
+                    android:textSize="12sp" android:paddingHorizontal="12dp"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <Button
-                    android:id="@+id/chipSocial"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="Sosyal"
-                    android:layout_marginEnd="6dp"
-                    android:textSize="12sp"
-                    android:paddingHorizontal="12dp"
+                <Button android:id="@+id/chipSocial"
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="@string/category_social" android:layout_marginEnd="6dp"
+                    android:textSize="12sp" android:paddingHorizontal="12dp"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <Button
-                    android:id="@+id/chipBank"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="Banka"
-                    android:layout_marginEnd="6dp"
-                    android:textSize="12sp"
-                    android:paddingHorizontal="12dp"
+                <Button android:id="@+id/chipBank"
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="@string/category_bank" android:layout_marginEnd="6dp"
+                    android:textSize="12sp" android:paddingHorizontal="12dp"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <Button
-                    android:id="@+id/chipGame"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="Oyun"
-                    android:layout_marginEnd="6dp"
-                    android:textSize="12sp"
-                    android:paddingHorizontal="12dp"
+                <Button android:id="@+id/chipGame"
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="@string/category_game" android:layout_marginEnd="6dp"
+                    android:textSize="12sp" android:paddingHorizontal="12dp"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <Button
-                    android:id="@+id/chipEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="E-posta"
-                    android:layout_marginEnd="6dp"
-                    android:textSize="12sp"
-                    android:paddingHorizontal="12dp"
+                <Button android:id="@+id/chipEmail"
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="@string/category_email" android:layout_marginEnd="6dp"
+                    android:textSize="12sp" android:paddingHorizontal="12dp"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <Button
-                    android:id="@+id/chipWork"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="İş"
-                    android:layout_marginEnd="6dp"
-                    android:textSize="12sp"
-                    android:paddingHorizontal="12dp"
+                <Button android:id="@+id/chipWork"
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="@string/category_work" android:layout_marginEnd="6dp"
+                    android:textSize="12sp" android:paddingHorizontal="12dp"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
-                <Button
-                    android:id="@+id/chipOther"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:text="Diğer"
-                    android:textSize="12sp"
+                <Button android:id="@+id/chipOther"
+                    android:layout_width="wrap_content" android:layout_height="32dp"
+                    android:text="@string/category_other" android:textSize="12sp"
                     android:paddingHorizontal="12dp"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
@@ -133,9 +106,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Henüz şifre eklenmedi"
+        android:text="@string/home_empty"
         android:textColor="@color/text_secondary"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -145,6 +118,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
+        android:contentDescription="@string/addedit_title_add"
         app:backgroundTint="@color/accent"
         app:tint="@color/bg_primary" />
 
