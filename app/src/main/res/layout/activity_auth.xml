@@ -5,38 +5,58 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/bg_primary"
-    android:padding="32dp">
+    android:padding="40dp">
 
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:src="@drawable/ic_lock"
         android:tint="@color/accent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:text="PassMngr"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:textColor="@color/text_primary"
-        android:fontFamily="sans-serif-medium" />
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.05" />
 
     <TextView
+        android:id="@+id/tvSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Şifrelerinizi güvenle saklayın"
-        android:textSize="14sp"
+        android:layout_marginTop="6dp"
+        android:text="Kimliğinizi doğrulayın"
+        android:textSize="13sp"
         android:textColor="@color/text_secondary" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:hint="PIN"
+        android:visibility="gone"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberPassword"
+            android:maxLength="8" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnAuth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="Parmak İzi ile Giriş"
-        android:backgroundTint="@color/accent"
-        android:textColor="@color/bg_primary" />
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:text="Giriş"
+        android:textColor="@color/bg_primary"
+        android:backgroundTint="@color/accent" />
 
 </LinearLayout>
