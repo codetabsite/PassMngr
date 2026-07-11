@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/bg_surface"
-        android:title="Şifre Ekle"
+        android:title="@string/addedit_title_add"
         android:titleTextColor="@color/text_primary" />
 
     <ScrollView
@@ -24,14 +24,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp"
-            android:gap="12dp">
+            android:padding="20dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Hesap Adı"
+                android:hint="@string/addedit_hint_account"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etAccount"
@@ -46,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:hint="Kullanıcı Adı / E-posta"
+                android:hint="@string/addedit_hint_username"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etUsername"
@@ -61,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:hint="Şifre"
+                android:hint="@string/addedit_hint_password"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
@@ -103,7 +102,7 @@
                     android:src="@drawable/ic_eye"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/text_secondary"
-                    android:contentDescription="Göster/Gizle" />
+                    android:contentDescription="@string/addedit_toggle_password" />
 
             </LinearLayout>
 
@@ -111,14 +110,14 @@
                 android:id="@+id/btnGenerate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Şifre üret"
+                android:text="@string/addedit_btn_generate"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Kategori"
+                android:text="@string/addedit_category_label"
                 android:textSize="12sp"
                 android:textColor="@color/text_secondary" />
 
@@ -133,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Not (isteğe bağlı)"
+                android:hint="@string/addedit_hint_note"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etNote"
@@ -149,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="24dp"
-                android:text="Kaydet"
+                android:text="@string/addedit_btn_save"
                 android:backgroundTint="@color/accent"
                 android:textColor="@color/bg_primary" />
 
