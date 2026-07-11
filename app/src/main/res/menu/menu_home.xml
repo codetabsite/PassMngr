@@ -3,9 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_sort"
+        android:title="Sırala"
+        app:showAsAction="never">
+        <menu>
+            <item android:id="@+id/action_sort_name" android:title="A-Z" />
+            <item android:id="@+id/action_sort_date" android:title="Son eklenen" />
+            <item android:id="@+id/action_sort_used" android:title="Son kullanılan" />
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/action_export"
-        android:title="Dışa Aktar"
-        android:icon="@drawable/ic_export"
-        app:showAsAction="ifRoom" />
+        android:title="Yedekle"
+        app:showAsAction="never" />
 
 </menu>
