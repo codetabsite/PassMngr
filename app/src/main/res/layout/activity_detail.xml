@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/bg_surface"
-        android:title="Detay"
+        android:title="@string/detail_title"
         android:titleTextColor="@color/text_primary" />
 
     <ScrollView
@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kullanıcı Adı"
+                android:text="@string/detail_label_username"
                 android:textSize="11sp"
                 android:textColor="@color/text_secondary" />
 
@@ -78,7 +78,7 @@
                     android:src="@drawable/ic_copy"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/text_secondary"
-                    android:contentDescription="Kullanıcı adını kopyala" />
+                    android:contentDescription="@string/detail_copy_username" />
 
             </LinearLayout>
 
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Şifre"
+                android:text="@string/detail_label_password"
                 android:textSize="11sp"
                 android:textColor="@color/text_secondary" />
 
@@ -113,7 +113,7 @@
                     android:src="@drawable/ic_eye"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/text_secondary"
-                    android:contentDescription="Göster/Gizle" />
+                    android:contentDescription="@string/addedit_toggle_password" />
 
                 <ImageButton
                     android:id="@+id/btnCopyPassword"
@@ -122,17 +122,16 @@
                     android:src="@drawable/ic_copy"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:tint="@color/text_secondary"
-                    android:contentDescription="Şifreyi kopyala" />
+                    android:contentDescription="@string/detail_copy_password" />
 
             </LinearLayout>
 
-            <!-- Not alanı — boşsa Activity tarafından gizlenir -->
             <TextView
                 android:id="@+id/tvNoteLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Not"
+                android:text="@string/detail_label_note"
                 android:textSize="11sp"
                 android:textColor="@color/text_secondary"
                 android:visibility="gone" />
@@ -156,7 +155,7 @@
                 android:id="@+id/btnHistory"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:text="Şifre Geçmişi"
+                android:text="@string/detail_btn_history"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
             <Button
@@ -164,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginTop="8dp"
-                android:text="Düzenle"
+                android:text="@string/detail_btn_edit"
                 android:backgroundTint="@color/accent"
                 android:textColor="@color/bg_primary" />
 
