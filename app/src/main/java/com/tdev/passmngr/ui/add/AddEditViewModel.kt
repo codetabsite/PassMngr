@@ -13,15 +13,21 @@ import kotlinx.coroutines.launch
 
 class AddEditViewModel(private val repo: PasswordRepository) : ViewModel() {
 
-    private val _existing = MutableStateFlow<Password?>(null)
+    private val _saved = MutableStateFlow(false)
+    val saved = _saved.asStateFlow()
+
+    var existing: Password? = null
+        private set
 
     fun load(id: Long) = viewModelScope.launch {
-        _existing.value = repo.getById(id)
+        existing = repo.getById(id)
     }
 
-    fun getExisting(): Password? = _existing.value
+    fun decryptExisting(): String = existing?.let { repo.decrypt(it) } ?: ""
 
     fun generatePassword(): String = PasswordGenerator.generate()
+
+    fun getStrength(pw: String): Int = PasswordGenerator.strength(pw)
 
     fun save(
         accountName: String,
@@ -29,25 +35,19 @@ class AddEditViewModel(private val repo: PasswordRepository) : ViewModel() {
         password: String,
         category: Category,
         note: String,
-        onDone: () -> Unit,
     ) = viewModelScope.launch {
-        val existing = _existing.value
         repo.save(
             Password(
                 id = existing?.id ?: 0L,
-                accountName = accountName.trim(),
-                username = username.trim(),
+                accountName = accountName,
+                username = username,
                 encryptedPassword = password,
                 category = category,
-                note = note.trim(),
+                note = note,
                 createdAt = existing?.createdAt ?: System.currentTimeMillis(),
             )
         )
-        onDone()
-    }
-
-    fun getHistory(id: Long, onResult: (List<String>) -> Unit) = viewModelScope.launch {
-        onResult(repo.getHistory(id))
+        _saved.value = true
     }
 }
 
